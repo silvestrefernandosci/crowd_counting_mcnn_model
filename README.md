@@ -1,171 +1,171 @@
-# 🚀 Contagem de Multidões (Crowd Counting)
+# 🚀 Crowd Counting
 
-## 📋 Sobre o Projeto
+## 📋 About the Project
 
-Este projeto implementa um sistema de **contagem de pessoas em multidões** utilizando a arquitetura **MCNN (Multi-Column Deep Neural Networks)**, treinada no dataset **ShanghaiTech** - um benchmark consolidado na comunidade acadêmica para pesquisa em contagem de multidões.
+This project implements a **crowd counting system** for estimating the number of people in images using the **MCNN (Multi-Column Deep Neural Networks)** architecture trained on the **ShanghaiTech** dataset - a well-established benchmark in the academic community for crowd counting research.
 
-### 🎯 Relevância
+### 🎯 Relevance
 
-A contagem precisa de multidões em imagens é um problema desafiador com aplicações críticas em:
+Accurate crowd counting in images is a challenging problem with critical applications in:
 
-- **Segurança Pública**: Monitoramento de eventos públicos, estádios e concentrações de pessoas
-- **Planejamento Urbano**: Análise de fluxo de pedestres em espaços públicos
-- **Vigilância Inteligente**: Sistemas de segurança que precisam quantificar aglomerações
-- **Pesquisa Acadêmica**: Desenvolvimento de métodos robustos para análise visual
+- **Public Safety**: Monitoring public events, stadiums, and crowd concentrations
+- **Urban Planning**: Analysis of pedestrian flow in public spaces
+- **Intelligent Surveillance**: Security systems that need to quantify crowd density
+- **Academic Research**: Development of robust methods for visual analysis
 
-O grande desafio reside na variabilidade de **densidades de multidões** - desde áreas com poucas pessoas até regiões extremamente densas, como manifestações públicas. Métodos tradicionais baseados em detecção de pessoas não são viáveis nestes cenários.
+The main challenge lies in the variability of **crowd densities** - from sparse areas with few people to extremely dense regions, such as public gatherings. Traditional person detection methods are not viable in these scenarios.
 
 ---
 
-## 📚 Fundação Teórica
+## 📚 Theoretical Foundation
 
 ### MCNN: Multi-Column Deep Neural Networks
 
-Este projeto baseia-se no trabalho seminal da Universidade de Shanghai:
+This project is based on the seminal work from Shanghai University:
 
 > **"Multi-Column Convolutional Neural Networks for Crowd Counting"**  
 > Zhang, C., Li, H., Wang, X., & Yang, X. (2015)  
 > IEEE Conference on Computer Vision and Pattern Recognition (CVPR)
 
-**Principais Contribuições:**
-- Arquitetura de múltiplas colunas (branches) com receptive fields diferentes
-- Fusão inteligente de features em múltiplas escalas
-- Mapas de densidade como saída (em vez de contagem direta)
-- Estado-da-arte em contagem de multidões por ~10 anos
+**Key Contributions:**
+- Multi-column architecture (branches) with different receptive fields
+- Intelligent feature fusion at multiple scales
+- Density maps as output (instead of direct counting)
+- State-of-the-art in crowd counting for ~10 years
 
-A arquitetura MCNN é especialmente eficaz porque:
-1. **Multi-escala**: Detecta pessoas em diferentes tamanhos e proximidades
-2. **Mapas de densidade**: Produz saídas espacialmente informativas
-3. **Generalização**: Excelente desempenho em datasets diversificados
-4. **Eficiência**: Rápida e viável para aplicações em tempo real
+The MCNN architecture is particularly effective because:
+1. **Multi-scale Processing**: Detects people at different sizes and proximities
+2. **Density Maps**: Produces spatially informative outputs
+3. **Generalization**: Excellent performance on diverse datasets
+4. **Efficiency**: Fast and viable for real-time applications
 
 ---
 
-## 📊 Resultados e Métricas
+## 📊 Results and Metrics
 
-### Evolução do Treinamento
+### Training Evolution
 
-A model demonstra convergência robusta durante o treinamento:
+The model demonstrates robust convergence during training:
 
 ![Training Loss](metrics/loss_train_and_mean_train_per_batch.png)
 
-**Observações:**
-- **Gráfico esquerdo**: Perda por batch - mostra a dinâmica de aprendizado em tempo real
-- **Gráfico direito**: Perda média por época - demonstra a trajetória geral de convergência
-- Redução consistente de ~0.97 até ~0.56 (queda de 42% na perda)
-- Convergência estável após ~4-5 épocas
+**Key Observations:**
+- **Left graph**: Loss per batch - shows real-time learning dynamics
+- **Right graph**: Average loss per epoch - demonstrates overall convergence trajectory
+- Consistent reduction from ~0.97 to ~0.56 (42% loss reduction)
+- Stable convergence after ~4-5 epochs
 
-### Amostras de Testes - Mapas de Densidade
+### Test Samples - Density Maps
 
-O modelo gera mapas de densidade que indicam **onde** e **com que intensidade** as pessoas estão concentradas:
+The model generates density maps that indicate **where** and **with what intensity** people are concentrated:
 
 ![Density Map Samples](metrics/testing_density_map_samples.png)
 
-**Como interpretar:**
-- **Imagens superiores**: Fotografias originais de multidões
-- **Mapas inferiores**: Mapa de densidade gerado pelo modelo (cores quentes = maior concentração)
-- **Sum**: Contagem total de pessoas estimada pelo modelo
-- **Cores**: Escala heatmap (azul=baixa densidade, vermelho=alta densidade)
+**How to Interpret:**
+- **Upper images**: Original crowd photographs
+- **Lower maps**: Density map generated by the model (warm colors = higher concentration)
+- **Sum**: Estimated total person count from the model
+- **Colors**: Heatmap scale (blue=low density, red=high density)
 
-**Capacidades demonstradas:**
-- ✓ Detecta corretamente variações de densidade
-- ✓ Localiza áreas de maior concentração
-- ✓ Generaliza para cenas com diferentes características (indoor/outdoor, dia/noite)
-- ✓ Robusto a oclusões parciais
+**Demonstrated Capabilities:**
+- ✓ Correctly detects density variations
+- ✓ Localizes areas of higher concentration
+- ✓ Generalizes to scenes with different characteristics (indoor/outdoor, day/night)
+- ✓ Robust to partial occlusions
 
 ---
 
-## 🛠️ Arquitetura do Projeto
+## 🛠️ Project Architecture
 
 ```
 crowd_counting/
-├── README.md                          # Este arquivo
-├── requirements.txt                   # Dependências Python
+├── README.md                          # This file
+├── requirements.txt                   # Python dependencies
 ├── model/
-│   └── mcnn_model_1.pth              # Modelo treinado
+│   └── mcnn_model_1.pth              # Trained model
 ├── metrics/
 │   ├── loss_train_and_mean_train_per_batch.png
 │   ├── testing_density_map_samples.png
 │   └── plot_crowd_counting_usage.png
 └── notebooks/
-    ├── mcnn_train_model.ipynb        # Treino do modelo
-    └── mcnn_test_model.ipynb         # Inferência e testes
+    ├── mcnn_train_model.ipynb        # Model training
+    └── mcnn_test_model.ipynb         # Inference and testing
 ```
 
 ---
 
-## 📦 Dependências
+## 📦 Dependencies
 
 ```
-kagglehub       # Para download do dataset ShanghaiTech
-torch          # Framework de deep learning
-torchvision    # Utilitários de visão computacional
-numpy          # Operações numéricas
-matplotlib     # Visualização
-pillow         # Processamento de imagens
-scipy          # Computação científica
-opencv-python  # Visão computacional
-h5py           # Armazenamento HDF5
-tqdm           # Barras de progresso
+kagglehub       # For ShanghaiTech dataset download
+torch          # Deep learning framework
+torchvision    # Computer vision utilities
+numpy          # Numerical operations
+matplotlib     # Visualization
+pillow         # Image processing
+scipy          # Scientific computing
+opencv-python  # Computer vision
+h5py           # HDF5 file storage
+tqdm           # Progress bars
 ```
 
-**Instalação:**
+**Installation:**
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## 🚀 Como Usar
+## 🚀 How to Use
 
-### 1. Treino do Modelo
+### 1. Model Training
 
-Abra o notebook **`notebooks/mcnn_train_model.ipynb`** para:
-- Carregar o dataset ShanghaiTech via Kaggle
-- Configurar hiperparâmetros
-- Treinar a arquitetura MCNN
-- Salvar o modelo treinado
+Open the notebook **`notebooks/mcnn_train_model.ipynb`** to:
+- Load the ShanghaiTech dataset via Kaggle
+- Configure hyperparameters
+- Train the MCNN architecture
+- Save the trained model
 
-### 2. Teste e Inferência
+### 2. Testing and Inference
 
-Abra o notebook **`notebooks/mcnn_test_model.ipynb`** para:
-- Carregar o modelo treinado (`model/mcnn_model_1.pth`)
-- Realizar inferência em imagens de teste
-- Gerar mapas de densidade
-- Visualizar resultados
+Open the notebook **`notebooks/mcnn_test_model.ipynb`** to:
+- Load the trained model (`model/mcnn_model_1.pth`)
+- Perform inference on test images
+- Generate density maps
+- Visualize results
 
 ---
 
-## 📖 Referências
+## 📖 References
 
-1. **Paper Seminal da Universidade de Shanghai**  
+1. **Seminal Paper from Shanghai University**  
    Zhang, C., Li, H., Wang, X., & Yang, X. (2015)  
    *"Multi-Column Convolutional Neural Networks for Crowd Counting"*  
    IEEE Conference on Computer Vision and Pattern Recognition (CVPR)  
    [[Paper](https://arxiv.org/abs/1504.04018)]
 
-2. **Base Teórica Original**  
+2. **Original Theoretical Foundation**  
    Zhang, Y., Zhou, D., Chen, S., Gao, S., & Ma, Y. (2015)  
    *"Multi-Column Deep Neural Networks for Image Classification"*  
    IEEE Conference on Computer Vision and Pattern Recognition (CVPR)  
    [[Paper](https://arxiv.org/abs/1409.5104)]
 
-3. **Dataset Utilizado**  
+3. **Dataset Used**  
    ShanghaiTech: Large-scale Crowd Counting Dataset  
    Zhang, C., Li, H., Wang, X., & Yang, X. (2015)  
-   Disponível em: [Kaggle - ShanghaiTech](https://www.kaggle.com/datasets/tthien/shanghaitech)
+   Available at: [Kaggle - ShanghaiTech](https://www.kaggle.com/datasets/tthien/shanghaitech)
 
 ---
 
-## 👨‍💻 Desenvolvedor
+## 👨‍💻 Developer
 
-Projeto baseado em pesquisa sobre **contagem densa de multidões** com foco em arquiteturas deep learning multi-escala.
+Project based on research in **dense crowd counting** with a focus on multi-scale deep learning architectures.
 
 ---
 
-## 📄 Licença
+## 📄 License
 
-Este projeto é fornecido como referência educacional e pesquisa acadêmica.
+This project is provided as an educational reference and academic research material.
 
 ---
 
