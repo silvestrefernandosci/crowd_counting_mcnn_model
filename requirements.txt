@@ -1,0 +1,10 @@
+kagglehub
+torch
+torchvision
+numpy
+matplotlib
+pillow
+scipy
+opencv-python
+h5py
+tqdm
